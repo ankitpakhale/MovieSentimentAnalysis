@@ -22,11 +22,22 @@ To set up the project, follow these steps:
 2. Navigate to the project directory.
 
 ### Setup
-1. Create a virtual environment:
+1. Clone the project repository:
+    ```bash
+    git clone https://github.com/ankitpakhale/MovieSentimentAnalysis.git
+    ```
+
+2. Navigate to the project directory:
+    ```bash
+    cd MovieSentimentAnalysis
+    ```
+
+3. Create a virtual environment:
     ```bash
     python3 -m venv venv
     ```
-2. Activate the virtual environment:
+
+4. Activate the virtual environment:
     - On Windows:
     ```bash
     venv\Scripts\activate
@@ -35,7 +46,8 @@ To set up the project, follow these steps:
     ```bash
     source venv/bin/activate
     ```
-3. Install the required dependencies:
+
+5. Install the required dependencies:
     ```bash
     pip install -r requirements.txt
     ```
