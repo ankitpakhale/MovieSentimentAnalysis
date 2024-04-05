@@ -4,11 +4,11 @@
 Movie Sentiment Analysis is a Django web application that allows users to submit movie reviews and performs sentiment analysis on them. The application also provides features to manipulate movie data, such as adding or deleting reviews.
 
 ## Technologies Used
-Python: Programming language used for backend development.
-Django: Web framework used for building the application.
-NLTK: Natural Language Toolkit library used for text preprocessing and sentiment analysis.
-Joblib: Library used for model persistence.
-Other Dependencies: See requirements.txt for a list of all dependencies.
+- Python: Programming language used for backend development.
+- Django: Web framework used for building the application.
+- NLTK: Natural Language Toolkit library used for text preprocessing and sentiment analysis.
+- Joblib: Library used for model persistence.
+- Other Dependencies: See requirements.txt for a list of all dependencies.
 
 ## Project Setup
 To set up the project, follow these steps:
