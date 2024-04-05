@@ -1,0 +1,40 @@
+# Django-related
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+
+# Static files
+/static/
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.svg
+*.ico
+*.wav
+*.mp3
+*.woff
+*.woff2
+*.ttf
+*.eot
+
+# Media files
+/media/
+
+# Database
+*.sqlite3
+
+# Virtual environments
+venv/
+
+# Environment variables
+.env
+
+# Compiled Python files
+*.pyc
+
+# IDE specific files
+.vscode/
+*.swp

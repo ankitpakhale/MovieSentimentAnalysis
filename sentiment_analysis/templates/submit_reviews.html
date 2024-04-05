@@ -1,0 +1,39 @@
+<!-- submit_review.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Submit Movie Review</title>
+</head>
+
+<body>
+     <h1>Submit Movie Review</h1>
+     <form method="post">
+          {% csrf_token %}
+          <!-- Movie Title Field -->
+          <label for="movie_title">Movie Title:</label>
+          <input type="text" name="movie_title" id="movie_title">
+
+          <!-- Review Text Field -->
+          <label for="review_text">Review Text:</label>
+          <textarea name="review_text" id="review_text" cols="30" rows="10"></textarea>
+
+          <!-- Option to add random data -->
+          <input type="checkbox" name="add_random_data" id="add_random_data">
+          <label for="add_random_data">Add Random Movie Data</label>
+          <input type="number" name="random_data_count" id="random_data_count" min="1" value="1">
+
+          <!-- Options to manipulate data -->
+          <select name="manipulate_action" id="manipulate_action">
+               <option value="add">Add Movie Reviews</option>
+               <option value="delete">Delete Added Movie Reviews</option>
+          </select>
+          <input type="number" name="manipulate_count" id="manipulate_count" min="1" value="1">
+
+          <button type="submit">Submit</button>
+     </form>
+</body>
+
+</html>

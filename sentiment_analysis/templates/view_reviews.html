@@ -1,0 +1,22 @@
+<!-- view_reviews.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8">
+     <title>View Movie Reviews</title>
+</head>
+
+<body>
+     <h1>Movie Reviews</h1>
+     <ul>
+          {% for review in reviews %}
+          <li>
+               <b>{{ review.movie_title }} - {{ review.sentiment }}</b>
+          </li>
+          <p>{{ review.review_text }}</p>
+          {% endfor %}
+     </ul>
+</body>
+
+</html>

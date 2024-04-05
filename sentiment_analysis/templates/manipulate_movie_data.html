@@ -1,0 +1,26 @@
+<!-- manipulate_movie_data.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Manipulate Movie Data</title>
+</head>
+
+<body>
+     <h1>Manipulate Movie Data</h1>
+     <form method="post">
+          {% csrf_token %}
+          <label for="action">Choose Action:</label>
+          <select name="action" id="action">
+               <option value="add">Add Movie Reviews</option>
+               <option value="delete">Delete Added Movie Reviews</option>
+          </select>
+          <label for="count">Number of Movies (for Add):</label>
+          <input type="number" name="count" id="count" min="1" value="1">
+          <button type="submit">Submit</button>
+     </form>
+</body>
+
+</html>
