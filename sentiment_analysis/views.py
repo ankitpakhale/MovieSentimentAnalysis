@@ -96,13 +96,17 @@ def manipulate_movie_data(request):
         if action == 'add':
             count = int(request.POST.get('count', 1))
             generate_random_movie_data(count)
-            return HttpResponse(f'Added {count} random movie reviews successfully!')
+            messages.success(request, f'Added {count} random movie reviews successfully!')
+
         elif action == 'delete':
             count = int(request.POST.get('count', 1))
             delete_added_movie_data(count)
-            return HttpResponse(f'Deleted {count} movie reviews successfully!')
+            messages.success(request, f'Deleted {count} movie reviews successfully!')
+
         else:
-            return HttpResponse('Invalid action.')
+            messages.success(request, 'Invalid action.')
+
+        return redirect('manipulate_movie_data')
     else:
         return render(request, 'manipulate_movie_data.html')
     
