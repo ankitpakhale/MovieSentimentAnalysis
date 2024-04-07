@@ -1,13 +1,17 @@
-# sentiment_analysis/views.py
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import MovieReview
-import random
-from .utils import load_sentiment_model
 from .forms import MovieReviewForm
-from .constents import MOVIE_TITLES, RESPONSES, MODEL_PATH
+from .utils import load_sentiment_model, classify_sentiment, preprocess_review
+from .constants import MOVIE_TITLES, RESPONSES, MODEL_PATH
+from sklearn.feature_extraction.text import TfidfVectorizer
+from django.contrib import messages
+import random
 import subprocess
 
+
+# Initialize TF-IDF vectorizer
+tfidf_vectorizer = TfidfVectorizer()
 
 
 def train_model(request):
@@ -23,42 +27,36 @@ def train_model(request):
             return HttpResponse(f'Error occurred during model training: {stderr.decode()}')
     else:
         return render(request, 'train_model.html')
-    
+
+
+
 
 def submit_review(request):
     if request.method == 'POST':
         form = MovieReviewForm(request.POST)
         if form.is_valid():
-            movie_title = form.cleaned_data['movie_title']
+            # Get the review text and movie title from the form
             review_text = form.cleaned_data['review_text']
-            
+            movie_title = form.cleaned_data['movie_title']
 
-        # Check if the user wants to add random movie data
-        if 'add_random_data' in request.POST:
-            count = int(request.POST.get('random_data_count', 1))
-            generate_random_movie_data(count)
-
-        # Check if the user wants to manipulate movie data
-        if 'manipulate_data' in request.POST:
-            action = request.POST.get('manipulate_action')
-            count = int(request.POST.get('manipulate_count', 1))
-            if action == 'add':
-                generate_random_movie_data(count)
-            elif action == 'delete':
-                delete_added_movie_data(count)
-
-            # Load the sentiment analysis model
+            # Load sentiment model
             sentiment_model = load_sentiment_model(MODEL_PATH)
             
-            # Classify the sentiment of the review using the loaded model
-            sentiment = sentiment_model.predict([review_text])[0]
+            # Classify sentiment of the review
+            sentiment = classify_sentiment(sentiment_model, review_text)
             
-            # Save the submitted review to the database
-            MovieReview.objects.create(movie_title=movie_title, review_text=review_text, sentiment=sentiment)
+            # Save the review to the database with the predicted sentiment
+            form.instance.sentiment = sentiment
+            form.save()
             
-            return HttpResponse('Review submitted successfully!')
+            # Set success message in session
+            messages.success(request, 'Data saved successfully.')
+            
+            # Redirect to the same page to prevent form resubmission
+            return redirect('submit_review')
     else:
         form = MovieReviewForm()
+    
     return render(request, 'submit_review.html', {'form': form})
 
 
@@ -75,7 +73,7 @@ def delete_added_movie_data(count):
     print(f"Deleted {count} added movie reviews.")
     print("*"*50)
 
-
+    
 
 def generate_random_movie_data(num_movies):
     for _ in range(num_movies):

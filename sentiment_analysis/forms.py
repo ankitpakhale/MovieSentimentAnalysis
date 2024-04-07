@@ -5,12 +5,7 @@ class MovieReviewForm(forms.ModelForm):
     class Meta:
         model = MovieReview
         fields = ['movie_title', 'review_text']
-        # All fields are non-required now
         widgets = {
-            'movie_title': forms.TextInput(attrs={'placeholder': 'Enter movie title'}),
-            'review_text': forms.Textarea(attrs={'placeholder': 'Enter your review'}),
+            'movie_title': forms.TextInput(attrs={'class': 'form-control'}),
+            'review_text': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
         }
-
-class ManipulateDataForm(forms.Form):
-    manipulate_action = forms.ChoiceField(choices=[('add', 'Add Movie Reviews'), ('delete', 'Delete Added Movie Reviews')])
-    manipulate_count = forms.IntegerField(min_value=1, initial=1)

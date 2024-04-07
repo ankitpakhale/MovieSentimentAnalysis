@@ -1,20 +1,17 @@
-# sentiment_analysis/utils.py
 import re
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import joblib
-from .constents import MODEL_PATH
+from sklearn.feature_extraction.text import TfidfVectorizer
+from .constants import MODEL_PATH, TFIDF_VECTORIZER_PATH
 
+# Load the TF-IDF vectorizer using the path from constants
+tfidf_vectorizer = joblib.load(TFIDF_VECTORIZER_PATH)
 
 
 def load_sentiment_model(model_path):
     return joblib.load(model_path)
-
-
-# Load the sentiment analysis model
-sentiment_model = load_sentiment_model(MODEL_PATH)
-
 
 def preprocess_review(review_text):
     # Convert text to lowercase
@@ -39,9 +36,14 @@ def preprocess_review(review_text):
     
     return preprocessed_text
 
-
-
 def classify_sentiment(model, review_text):
+    # Preprocess the review text
     preprocessed_text = preprocess_review(review_text)
-    sentiment = model.predict([preprocessed_text])[0]
+    
+    # Transform the preprocessed text using the loaded TF-IDF vectorizer
+    preprocessed_text_vectorized = tfidf_vectorizer.transform([preprocessed_text])
+    
+    # Predict sentiment using the model
+    sentiment = model.predict(preprocessed_text_vectorized)[0]
+    
     return sentiment

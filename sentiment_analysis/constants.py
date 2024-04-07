@@ -24,3 +24,6 @@ RESPONSES = [
 
 # the path of the trained model file
 MODEL_PATH = 'sentiment_analysis/models/model.pkl'
+
+# the path of the trained tfidf_vectorizer model file
+TFIDF_VECTORIZER_PATH = 'sentiment_analysis/models/tfidf_vectorizer.pkl'

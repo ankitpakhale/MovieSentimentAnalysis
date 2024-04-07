@@ -1,8 +1,5 @@
 from django.db import models
 
-# sentiment_analysis/models.py
-from django.db import models
-
 class MovieReview(models.Model):
     movie_title = models.CharField(max_length=255)
     review_text = models.TextField()

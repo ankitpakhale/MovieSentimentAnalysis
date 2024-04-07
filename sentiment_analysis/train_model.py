@@ -1,4 +1,3 @@
-# sentiment_analysis/train_model.py
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -10,7 +9,6 @@ import joblib
 data = pd.read_csv('dataset/imdb_dataset.csv')
 
 # Data Preprocessing
-# For simplicity, we'll only perform tokenization and TF-IDF feature extraction
 vectorizer = TfidfVectorizer()
 X = vectorizer.fit_transform(data['review'])
 y = data['sentiment']
@@ -29,3 +27,6 @@ print("Accuracy:", accuracy)
 
 # Save the trained model to a file
 joblib.dump(model, 'models/model.pkl')
+
+# Save the TF-IDF vectorizer to a file
+joblib.dump(vectorizer, 'models/tfidf_vectorizer.pkl')
