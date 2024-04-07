@@ -29,9 +29,7 @@ def train_model(request):
         return render(request, 'train_model.html')
 
 
-
-
-def submit_review(request):
+def TBD_submit_review(request):
     if request.method == 'POST':
         form = MovieReviewForm(request.POST)
         if form.is_valid():
@@ -60,6 +58,43 @@ def submit_review(request):
     return render(request, 'submit_review.html', {'form': form})
 
 
+def save_review_to_database(movie_title, review_text):
+    # Load sentiment model
+    sentiment_model = load_sentiment_model(MODEL_PATH)
+    
+    # Classify sentiment of the review
+    sentiment = classify_sentiment(sentiment_model, review_text)
+    
+    # Save the review to the database with the predicted sentiment
+    movie_obj = MovieReview.objects.create(movie_title=movie_title, review_text=review_text, sentiment=sentiment)
+    print('➡ movie_title:', movie_title)
+    print('➡ movie_obj:', movie_obj)
+    print("*"*50)
+
+
+def submit_review(request):
+    if request.method == 'POST':
+        form = MovieReviewForm(request.POST)
+        if form.is_valid():
+            # Get the review text and movie title from the form
+            review_text = form.cleaned_data['review_text']
+            movie_title = form.cleaned_data['movie_title']
+            
+            # Save the review to the database
+            save_review_to_database(movie_title, review_text)
+            
+            # Set success message in session
+            messages.success(request, 'Data saved successfully.')
+            
+            # Redirect to the same page to prevent form resubmission
+            return redirect('submit_review')
+    else:
+        form = MovieReviewForm()
+    
+    return render(request, 'submit_review.html', {'form': form})
+
+
+
 def view_reviews(request):
     reviews = MovieReview.objects.all()
     return render(request, 'view_reviews.html', {'reviews': reviews})
@@ -80,12 +115,9 @@ def generate_random_movie_data(num_movies):
         movie_title = random.choice(MOVIE_TITLES)
         review_text = random.choice(RESPONSES)
 
-        movie_review = MovieReview.objects.create(
-            movie_title=movie_title,
-            review_text=review_text,
-        )
+        save_review_to_database(movie_title, review_text)
         print("*"*50)
-        print(f"Created review for {movie_title}")
+        print(f"Saved review for {movie_title}")
         print("*"*50)
 
 
