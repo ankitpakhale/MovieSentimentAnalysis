@@ -29,35 +29,6 @@ def train_model(request):
         return render(request, 'train_model.html')
 
 
-def TBD_submit_review(request):
-    if request.method == 'POST':
-        form = MovieReviewForm(request.POST)
-        if form.is_valid():
-            # Get the review text and movie title from the form
-            review_text = form.cleaned_data['review_text']
-            movie_title = form.cleaned_data['movie_title']
-
-            # Load sentiment model
-            sentiment_model = load_sentiment_model(MODEL_PATH)
-            
-            # Classify sentiment of the review
-            sentiment = classify_sentiment(sentiment_model, review_text)
-            
-            # Save the review to the database with the predicted sentiment
-            form.instance.sentiment = sentiment
-            form.save()
-            
-            # Set success message in session
-            messages.success(request, 'Data saved successfully.')
-            
-            # Redirect to the same page to prevent form resubmission
-            return redirect('submit_review')
-    else:
-        form = MovieReviewForm()
-    
-    return render(request, 'submit_review.html', {'form': form})
-
-
 def save_review_to_database(movie_title, review_text):
     # Load sentiment model
     sentiment_model = load_sentiment_model(MODEL_PATH)
@@ -67,9 +38,10 @@ def save_review_to_database(movie_title, review_text):
     
     # Save the review to the database with the predicted sentiment
     movie_obj = MovieReview.objects.create(movie_title=movie_title, review_text=review_text, sentiment=sentiment)
-    print('➡ movie_title:', movie_title)
-    print('➡ movie_obj:', movie_obj)
-    print("*"*50)
+    print("\n\n" + "*" * 100)
+    print(f'➡ movie_title: {movie_obj}')
+    print(f'➡ movie_obj: {sentiment}')
+    print("*" * 100 + "\n\n")
 
 
 def submit_review(request):
@@ -104,9 +76,9 @@ def delete_added_movie_data(count):
     added_movies = MovieReview.objects.filter(movie_title__in=MOVIE_TITLES)[:count]
     for movie in added_movies:
         movie.delete()
-    print("*"*50)
-    print(f"Deleted {count} added movie reviews.")
-    print("*"*50)
+    print("\n\n" + "*" * 100)
+    print(f"Deleted {count} movie reviews.")
+    print("*" * 100 + "\n\n")
 
     
 
@@ -116,10 +88,6 @@ def generate_random_movie_data(num_movies):
         review_text = random.choice(RESPONSES)
 
         save_review_to_database(movie_title, review_text)
-        print("*"*50)
-        print(f"Saved review for {movie_title}")
-        print("*"*50)
-
 
 
 def manipulate_movie_data(request):
@@ -132,7 +100,7 @@ def manipulate_movie_data(request):
         elif action == 'delete':
             count = int(request.POST.get('count', 1))
             delete_added_movie_data(count)
-            return HttpResponse(f'Deleted {count} added movie reviews successfully!')
+            return HttpResponse(f'Deleted {count} movie reviews successfully!')
         else:
             return HttpResponse('Invalid action.')
     else:

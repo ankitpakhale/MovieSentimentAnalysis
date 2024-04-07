@@ -7,9 +7,3 @@ class MovieReview(models.Model):
 
     def __str__(self):
         return self.movie_title
-
-class SentimentLabel(models.Model):
-    label_name = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.label_name
